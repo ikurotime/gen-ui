@@ -7,8 +7,10 @@ import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { firstMessage } from '@/lib/utils'
+import { useAtom } from 'jotai'
 
-type Message = {
+export type Message = {
   id: number
   text: string
   sender: 'user' | 'bot'
@@ -21,9 +23,19 @@ type Chat = {
 }
 
 export default function ChatInterface() {
-  const [chats, setChats] = useState<Chat[]>([
-    { id: 1, name: 'New chat', messages: [] }
-  ])
+  const [message] = useAtom(firstMessage)
+  const initialChat: Chat[] = [
+    {
+      id: 1,
+      name: 'New chat',
+      messages: []
+    }
+  ]
+
+  if (message) {
+    initialChat[0].messages.push(message)
+  }
+  const [chats, setChats] = useState<Chat[]>(initialChat)
   const [currentChat, setCurrentChat] = useState<number>(1)
   const [input, setInput] = useState('')
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)

@@ -2,18 +2,21 @@
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { firstMessage } from '@/lib/utils'
+import { useAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export default function Home() {
   const [input, setInput] = useState('')
   const router = useRouter()
-
+  const [, setMessage] = useAtom(firstMessage)
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (input.trim()) {
-      const chatId = Date.now().toString()
-      router.push(`/c/${chatId}?message=${encodeURIComponent(input)}`)
+      setMessage({ id: Date.now(), text: input, sender: 'user' })
+      const chatId = crypto.randomUUID()
+      router.push(`/c/${chatId}`)
     }
   }
 
