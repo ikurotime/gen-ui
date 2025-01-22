@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { firstMessage } from '@/lib/utils'
 import { useAtom } from 'jotai'
+import { useChat } from 'ai/react'
 
 export type Message = {
   id: string
@@ -25,6 +26,14 @@ type Chat = {
 
 export default function ChatInterface() {
   const [message] = useAtom(firstMessage)
+  const {
+    input,
+    handleInputChange,
+    handleSubmit: handleChatSubmit,
+    messages
+  } = useChat({
+    initialInput: message?.content || ''
+  })
   const initialChat: Chat[] = [
     {
       id: '1',
@@ -33,15 +42,16 @@ export default function ChatInterface() {
     }
   ]
 
-  if (message) {
-    initialChat[0].messages.push(message)
-  }
+  useEffect(() => {
+    if (message) {
+      handleChatSubmit()
+    }
+  }, [message])
   const [chats, setChats] = useState<Chat[]>(initialChat)
   const [currentChat, setCurrentChat] = useState<string>('1')
-  const [input, setInput] = useState('')
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
@@ -50,6 +60,7 @@ export default function ChatInterface() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    handleChatSubmit()
     if (input.trim()) {
       const userMessage: Message = {
         id: Date.now().toString(),
@@ -64,7 +75,6 @@ export default function ChatInterface() {
             : chat
         )
       )
-      setInput('')
     }
   }
 
@@ -128,34 +138,34 @@ export default function ChatInterface() {
           </Button>
         </div>
         <ScrollArea className='flex-1 px-4'>
-          <AnimatePresence initial={false}>
+          <AnimatePresence mode='popLayout'>
             <div className='max-w-3xl mx-auto'>
-              {chats
-                .find((chat) => chat.id === currentChat)
-                ?.messages.map((message) => (
-                  <motion.div
-                    key={message.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    className={`flex ${
-                      message.sender === 'user'
-                        ? 'justify-end'
-                        : 'justify-start'
-                    } mb-4`}
+              {messages.map((message, index) => (
+                <motion.div
+                  key={message.id}
+                  initial={
+                    index === messages.length - 1
+                      ? { opacity: 0, y: 20 }
+                      : false
+                  }
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  className={`flex ${
+                    message.role === 'user' ? 'justify-end' : 'justify-start'
+                  } mb-4`}
+                >
+                  <div
+                    className={`max-w-xs md:max-w-md px-4 py-2 rounded-lg text-sm ${
+                      message.role === 'user'
+                        ? 'bg-neutral-700 text-white'
+                        : 'bg-neutral-800 text-white'
+                    }`}
                   >
-                    <div
-                      className={`max-w-xs md:max-w-md px-4 py-2 rounded-lg text-sm ${
-                        message.sender === 'user'
-                          ? 'bg-neutral-700 text-white'
-                          : 'bg-neutral-800 text-white'
-                      }`}
-                    >
-                      {message.content}
-                    </div>
-                  </motion.div>
-                ))}
+                    {message.content}
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </AnimatePresence>
           <div ref={messagesEndRef} />
@@ -170,7 +180,7 @@ export default function ChatInterface() {
               <Input
                 type='text'
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={handleInputChange}
                 placeholder='Type a message...'
                 className='w-full bg-neutral-800 text-white border-neutral-700 focus:ring-neutral-700 text-sm'
               />
