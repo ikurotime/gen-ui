@@ -16,9 +16,25 @@ export default function Home() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (input.trim()) {
-      setMessage({ id: Date.now(), text: input, sender: 'user' })
       const chatId = crypto.randomUUID()
-      createChat({ name: 'New chat', id: chatId })
+      setMessage({
+        id: Date.now().toString(),
+        content: input,
+        chatId,
+        sender: 'user'
+      })
+      createChat({
+        name: 'New chat',
+        id: chatId,
+        messages: [
+          {
+            id: Date.now().toString(),
+            content: input,
+            chatId,
+            sender: 'user'
+          }
+        ]
+      })
       router.push(`/c/${chatId}`)
     }
   }

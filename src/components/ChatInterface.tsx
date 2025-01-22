@@ -11,13 +11,14 @@ import { firstMessage } from '@/lib/utils'
 import { useAtom } from 'jotai'
 
 export type Message = {
-  id: number
-  text: string
+  id: string
+  content: string
+  chatId: string
   sender: 'user' | 'bot'
 }
 
 type Chat = {
-  id: number
+  id: string
   name: string
   messages: Message[]
 }
@@ -26,7 +27,7 @@ export default function ChatInterface() {
   const [message] = useAtom(firstMessage)
   const initialChat: Chat[] = [
     {
-      id: 1,
+      id: '1',
       name: 'New chat',
       messages: []
     }
@@ -36,7 +37,7 @@ export default function ChatInterface() {
     initialChat[0].messages.push(message)
   }
   const [chats, setChats] = useState<Chat[]>(initialChat)
-  const [currentChat, setCurrentChat] = useState<number>(1)
+  const [currentChat, setCurrentChat] = useState<string>('1')
   const [input, setInput] = useState('')
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -51,8 +52,9 @@ export default function ChatInterface() {
     e.preventDefault()
     if (input.trim()) {
       const userMessage: Message = {
-        id: Date.now(),
-        text: input,
+        id: Date.now().toString(),
+        content: input,
+        chatId: currentChat,
         sender: 'user'
       }
       setChats((prevChats) =>
@@ -63,28 +65,12 @@ export default function ChatInterface() {
         )
       )
       setInput('')
-
-      // Simulate bot response
-      setTimeout(() => {
-        const botMessage: Message = {
-          id: Date.now() + 1,
-          text: 'Thanks for your message! How can I assist you further?',
-          sender: 'bot'
-        }
-        setChats((prevChats) =>
-          prevChats.map((chat) =>
-            chat.id === currentChat
-              ? { ...chat, messages: [...chat.messages, botMessage] }
-              : chat
-          )
-        )
-      }, 500) // Faster response time
     }
   }
 
   const createNewChat = () => {
     const newChat: Chat = {
-      id: Date.now(),
+      id: Date.now().toString(),
       name: `New chat ${chats.length + 1}`,
       messages: []
     }
@@ -166,7 +152,7 @@ export default function ChatInterface() {
                           : 'bg-neutral-800 text-white'
                       }`}
                     >
-                      {message.text}
+                      {message.content}
                     </div>
                   </motion.div>
                 ))}
