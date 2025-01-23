@@ -3,28 +3,13 @@ import { Plus } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { memo } from 'react'
 import { motion } from 'framer-motion'
+import { useChatContext } from './ChatContext'
 
-interface Chat {
-  id: string
-  name: string
-}
+export const Sidebar = memo(function Sidebar() {
+  const { isSidebarOpen, chats, currentChat, createNewChat, setCurrentChat } =
+    useChatContext()
 
-interface SidebarProps {
-  isOpen: boolean
-  chats: Chat[]
-  currentChat: string
-  onNewChat: () => void
-  onSelectChat: (id: string) => void
-}
-
-export const Sidebar = memo(function Sidebar({
-  isOpen,
-  chats,
-  currentChat,
-  onNewChat,
-  onSelectChat
-}: SidebarProps) {
-  if (!isOpen) return null
+  if (!isSidebarOpen) return null
 
   return (
     <motion.div
@@ -34,14 +19,18 @@ export const Sidebar = memo(function Sidebar({
       className='h-screen bg-neutral-950 overflow-hidden'
     >
       <div className='p-4'>
-        <Button onClick={onNewChat} variant='default' className='w-full mb-4'>
+        <Button
+          onClick={createNewChat}
+          variant='default'
+          className='w-full mb-4'
+        >
           <Plus className='mr-2 h-4 w-4' /> New Chat
         </Button>
         <ScrollArea className='h-[calc(100vh-80px)]'>
           {chats.map((chat) => (
             <Button
               key={chat.id}
-              onClick={() => onSelectChat(chat.id)}
+              onClick={() => setCurrentChat(chat.id)}
               variant={currentChat === chat.id ? 'default' : 'ghost'}
               className='w-full justify-start mb-2 text-sm'
             >

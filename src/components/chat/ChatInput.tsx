@@ -1,36 +1,20 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Send } from 'lucide-react'
-import { memo } from 'react'
+import { useChatContext } from './ChatContext'
 
-interface ChatInputProps {
-  input: string
-  isSidebarOpen: boolean
-  onSubmit: (e: React.FormEvent) => void
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
+export const ChatInput = () => {
+  const { isSidebarOpen, handleSubmit } = useChatContext()
 
-export const ChatInput = memo(function ChatInput({
-  input,
-  isSidebarOpen,
-  onSubmit,
-  onChange
-}: ChatInputProps) {
   return (
     <div className='p-4 border-t border-neutral-800'>
-      <form onSubmit={onSubmit} className='flex items-center space-x-2'>
+      <form onSubmit={handleSubmit} className='flex items-center space-x-2'>
         <div
           className={`flex-grow ${
             isSidebarOpen ? 'max-w-3xl' : 'max-w-2xl'
           } mx-auto`}
         >
-          <Input
-            type='text'
-            value={input}
-            onChange={onChange}
-            placeholder='Type a message...'
-            className='w-full bg-neutral-800 text-white border-neutral-700 focus:ring-neutral-700 text-sm'
-          />
+          <InputBox />
         </div>
         <Button
           type='submit'
@@ -43,4 +27,17 @@ export const ChatInput = memo(function ChatInput({
       </form>
     </div>
   )
-})
+}
+
+function InputBox() {
+  const { input, handleInputChange } = useChatContext()
+  return (
+    <Input
+      type='text'
+      value={input}
+      onChange={handleInputChange}
+      placeholder='Type a message...'
+      className='w-full bg-neutral-800 text-white border-neutral-700 focus:ring-neutral-700 text-sm'
+    />
+  )
+}

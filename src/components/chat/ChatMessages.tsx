@@ -1,17 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { memo, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import Message from '@/app/(chat)/c/[slug]/components/message'
-import { Message as MessageType } from 'ai'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useChatContext } from './ChatContext'
 
-interface ChatMessagesProps {
-  messages: MessageType[]
-}
-
-export const ChatMessages = memo(function ChatMessages({
-  messages
-}: ChatMessagesProps) {
+export const ChatMessages = () => {
+  const { messages } = useChatContext()
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -45,4 +40,4 @@ export const ChatMessages = memo(function ChatMessages({
       <div ref={messagesEndRef} />
     </ScrollArea>
   )
-})
+}
