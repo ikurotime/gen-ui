@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import Message from '@/app/(chat)/c/[slug]/components/message'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { firstMessage } from '@/lib/utils'
 import { useAtom } from 'jotai'
@@ -155,15 +156,7 @@ export default function ChatInterface() {
                     message.role === 'user' ? 'justify-end' : 'justify-start'
                   } mb-4`}
                 >
-                  <div
-                    className={`max-w-xs md:max-w-md px-4 py-2 rounded-lg text-sm ${
-                      message.role === 'user'
-                        ? 'bg-neutral-700 text-white'
-                        : 'bg-neutral-800 text-white'
-                    }`}
-                  >
-                    {message.content}
-                  </div>
+                  <Message content={message.content} role={message.role} />
                 </motion.div>
               ))}
             </div>
