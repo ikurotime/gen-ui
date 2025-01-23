@@ -1,10 +1,11 @@
 export async function POST(req: Request) {
-  const { id } = await req.json()
-  const body = await fetch(`http://localhost:8080/get-chat?chat_id=${id}`, {
-    method: 'GET',
+  const { id, name, messages } = await req.json()
+  const body = await fetch('http://localhost:8080/create-chat', {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json'
-    }
+    },
+    body: JSON.stringify({ id, name, messages })
   })
   console.log({ body })
   if (!body.ok) {
