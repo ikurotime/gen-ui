@@ -3,11 +3,14 @@ import { Plus } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { memo } from 'react'
 import { motion } from 'framer-motion'
-import { useChatContext } from './ChatContext'
+import { useChatStore } from '@/store/chat-store'
 
 export const Sidebar = memo(function Sidebar() {
-  const { isSidebarOpen, chats, currentChat, createNewChat, setCurrentChat } =
-    useChatContext()
+  const isSidebarOpen = useChatStore((state) => state.isSidebarOpen)
+  const chats = useChatStore((state) => state.chats)
+  const currentChat = useChatStore((state) => state.currentChat)
+  const createNewChat = useChatStore((state) => state.createNewChat)
+  const setCurrentChat = useChatStore((state) => state.setCurrentChat)
 
   if (!isSidebarOpen) return null
 

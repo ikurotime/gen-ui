@@ -4,11 +4,9 @@ import { ChatInput } from './chat/ChatInput'
 import { ChatMessages } from './chat/ChatMessages'
 import { Menu } from 'lucide-react'
 import { Sidebar } from './chat/Sidebar'
-import { useChatContext } from './chat/ChatContext'
+import { useChatStore } from '@/store/chat-store'
 export default function ChatLayout() {
-  'use memo'
-
-  const { toggleSidebar } = useChatContext()
+  const toggleSidebar = useChatStore((state) => state.toggleSidebar)
 
   return (
     <div className='flex h-screen bg-neutral-900'>

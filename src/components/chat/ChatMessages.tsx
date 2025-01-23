@@ -1,12 +1,14 @@
+'use client'
+
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 
 import Message from '@/app/(chat)/c/[slug]/components/message'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { useChatContext } from './ChatContext'
+import { useChatStore } from '@/store/chat-store'
 
 export const ChatMessages = () => {
-  const { messages } = useChatContext()
+  const messages = useChatStore((state) => state.messages)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
