@@ -6,13 +6,10 @@ import { motion } from 'framer-motion'
 import { useChatStore } from '@/store/chat-store'
 
 export const Sidebar = memo(function Sidebar() {
-  const isSidebarOpen = useChatStore((state) => state.isSidebarOpen)
   const chats = useChatStore((state) => state.chats)
   const currentChat = useChatStore((state) => state.currentChat)
   const createNewChat = useChatStore((state) => state.createNewChat)
   const setCurrentChat = useChatStore((state) => state.setCurrentChat)
-
-  if (!isSidebarOpen) return null
 
   return (
     <motion.div

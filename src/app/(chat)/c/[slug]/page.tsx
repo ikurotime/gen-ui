@@ -71,6 +71,7 @@ export default function ChatPage() {
   })
   const toggleSidebar = useChatStore((state) => state.toggleSidebar)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const isSidebarOpen = useChatStore((state) => state.isSidebarOpen)
 
   // const scrollToBottom = () => {
   //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -81,7 +82,7 @@ export default function ChatPage() {
   return (
     <div className='flex h-screen bg-neutral-900'>
       <AnimatePresence>
-        <Sidebar />
+        {isSidebarOpen && <Sidebar key='sidebar' />}
       </AnimatePresence>
       <div className='flex-1 flex flex-col'>
         <div className='p-4'>
