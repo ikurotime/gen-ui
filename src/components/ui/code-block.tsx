@@ -1,3 +1,4 @@
+import { Copy } from 'lucide-react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
@@ -25,8 +26,16 @@ export const CodeBlock = ({
 
   if (!inline && match) {
     return (
-      <div className='relative rounded-md'>
-        <span>{match?.[1]}</span>
+      <div className='relative rounded-md bg-[#2d2d2d] flex flex-col'>
+        <div className='p-2 px-4 flex items-center justify-between w-full border-b border-[#3d3d3d]'>
+          <span>{match?.[1]} </span>
+          <div>
+            <button className='flex gap-2 items-center p-1 px-2 hover:bg-[#3d3d3d] rounded focus:outline-none'>
+              <Copy className='size-4' />
+              Copy
+            </button>
+          </div>
+        </div>
         <SyntaxHighlighter
           language={match?.[1]}
           style={oneDark}

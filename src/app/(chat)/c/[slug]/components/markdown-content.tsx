@@ -33,7 +33,6 @@ export const MarkdownContent = memo(function MarkdownContent({
   id = 'default'
 }: MarkdownContentProps) {
   const blocks = useMemo(() => parseMarkdownIntoBlocks(content), [content])
-
   return blocks.map((block, index) => (
     <MemoizedMarkdownBlock content={block} key={`${id}-block_${index}`} />
   ))

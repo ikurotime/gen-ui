@@ -5,9 +5,7 @@ import { useEffect } from 'react'
 export const ReactScan = () => {
   useEffect(() => {
     scan({
-      enabled: process.env.NODE_ENV === 'development',
-      log: true,
-      trackUnnecessaryRenders: true
+      enabled: process.env.NODE_ENV === 'development'
     })
   }, [])
   return null

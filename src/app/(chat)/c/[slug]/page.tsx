@@ -107,7 +107,7 @@ export default function ChatPage() {
                   className={`${
                     message.role === 'user'
                       ? 'bg-stone-700 text-white rounded-lg p-2 px-3'
-                      : 'flex flex-col prose prose-invert w-full max-w-[90ch]'
+                      : 'flex flex-col prose prose-invert w-full prose-pre:p-0 max-w-[90ch]'
                   }`}
                 >
                   <MarkdownContent id={message.id} content={message.content} />
