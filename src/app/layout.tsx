@@ -3,6 +3,7 @@ import './globals.css'
 import { Geist, Geist_Mono } from 'next/font/google'
 
 import type { Metadata } from 'next'
+import { Providers } from '@/components/Providers'
 import React from 'react'
 import { ReactScan } from './react-scan'
 
@@ -32,7 +33,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark:text-white`}
       >
         <ReactScan />
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
