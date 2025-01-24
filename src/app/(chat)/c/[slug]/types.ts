@@ -1,4 +1,4 @@
-import { Message } from '@/components/ChatInterface'
+import { Message } from '@/lib/utils'
 
 export type CreateChatDTO = {
   id: string
