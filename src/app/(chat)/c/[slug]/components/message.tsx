@@ -22,7 +22,7 @@ const BotMessage = memo(function BotMessage({ content }: { content: string }) {
       <div className='border absolute -left-14 rounded-full size-10 p-1 border-stone-300 flex justify-center items-center'>
         <BotIcon />
       </div>
-      <div className='flex flex-col prose prose-invert'>
+      <div className='flex flex-col prose prose-invert w-full max-w-[90ch]'>
         <MarkdownContent content={content} />
       </div>
     </div>

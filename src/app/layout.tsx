@@ -3,7 +3,8 @@ import './globals.css'
 import { Geist, Geist_Mono } from 'next/font/google'
 
 import type { Metadata } from 'next'
-import { Providers } from '@/components/Providers'
+import React from 'react'
+import { ReactScan } from './react-scan'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -27,13 +28,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <head>
-        <script src='https://unpkg.com/react-scan/dist/auto.global.js' async />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark:text-white`}
       >
-        <Providers>{children}</Providers>
+        <ReactScan />
+        {children}
       </body>
     </html>
   )
